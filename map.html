@@ -11,28 +11,27 @@
     </style>
 </head>
 <body>
-    <h1>Visitor Map</h1>
+    <h1>Visitor Locations</h1>
     <div id="map"></div>
 
     <script>
         let map;
 
         async function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
+            map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 0, lng: 0 },
                 zoom: 2,
             });
 
-            // Fetch locations from Supabase
             const response = await fetch('/api/getVisits');
-            const data = await response.json();
+            const locations = await response.json();
 
-            data.forEach(visit => {
+            locations.forEach(visit => {
                 if (visit.latitude && visit.longitude) {
                     new google.maps.Marker({
                         position: { lat: visit.latitude, lng: visit.longitude },
                         map: map,
-                        title: `Visitor: ${visit.platform}, ${visit.language}`
+                        title: `Visitor: ${visit.platform} | ${visit.language}`
                     });
                 }
             });
