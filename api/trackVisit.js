@@ -5,15 +5,17 @@ export default async function handler(req, res) {
         const userAgent = req.headers['user-agent'] || 'Unknown';
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
-        const logEntry = `Page Visit Tracked:
+      const logEntry = `Page Visit Tracked:
 IP: ${ip}
 User Agent: ${userAgent}
 Platform: ${data.platform}
 Language: ${data.language}
 Latitude: ${data.latitude || 'Not Available'}
 Longitude: ${data.longitude || 'Not Available'}
+Google Maps: https://www.google.com/maps?q=${data.latitude || ''},${data.longitude || ''}
 Timestamp: ${new Date().toISOString()}
 -------------------------------\n`;
+
 
         console.log(logEntry); // View in Vercel Function Logs
 
