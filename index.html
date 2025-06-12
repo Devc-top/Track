@@ -2,38 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Device Tracker</title>
+    <title>Click Tracker</title>
 </head>
 <body>
-    <h1>Tracking Device Info...</h1>
-
-    <script>
-        async function sendDeviceInfo() {
-            const deviceInfo = {
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                language: navigator.language,
-            };
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    deviceInfo.latitude = position.coords.latitude;
-                    deviceInfo.longitude = position.coords.longitude;
-
-                    await fetch('/api/saveDeviceInfo', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(deviceInfo)
-                    });
-                }, (error) => {
-                    console.error('Location access denied.');
-                });
-            } else {
-                console.error('Geolocation not supported.');
-            }
-        }
-
-        sendDeviceInfo();
-    </script>
+    <h1>Click Tracker Example</h1>
+    <a href="/api/trackClick?redirect=https://example.com" target="_blank">Click Me</a>
 </body>
 </html>
