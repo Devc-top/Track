@@ -10,10 +10,7 @@ User Agent: ${userAgent}
 Timestamp: ${new Date().toISOString()}
 -------------------------------\n`;
 
-    console.log(logEntry); // For Vercel logs
-
-    // 👉 You cannot store on file system in Vercel
-    // Suggestion: Store in database (Supabase, Firebase, Google Sheets via API)
+    console.log(logEntry); // Logs are visible in Vercel’s serverless logs
 
     // Redirect user
     res.writeHead(302, { Location: redirect || 'https://example.com' });
