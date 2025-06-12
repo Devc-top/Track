@@ -2,10 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Credit Alert</title>
+    <title>Page Visit Tracker</title>
 </head>
 <body>
-    <h1>Click Tracker Example</h1>
-    <a href="/api/trackClick?redirect=https://creditgetio.vercel.app" target="_blank">Click Me</a>
+    <h1>Welcome to My Tracking Page</h1>
+
+    <script>
+        window.onload = async function () {
+            const visitInfo = {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language
+            };
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    visitInfo.latitude = position.coords.latitude;
+                    visitInfo.longitude = position.coords.longitude;
+
+                    await fetch('/api/trackVisit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(visitInfo)
+                    });
+                }, async () => {
+                    // If location is blocked
+                    await fetch('/api/trackVisit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(visitInfo)
+                    });
+                });
+            } else {
+                // Geolocation not supported
+                await fetch('/api/trackVisit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(visitInfo)
+                });
+            }
+        }
+    </script>
 </body>
 </html>
