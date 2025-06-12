@@ -1,31 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Device Tracker</title>
 </head>
 <body>
-    <h1>Device Info is Being Tracked...</h1>
+    <h1>Tracking Device Info...</h1>
 
     <script>
         async function sendDeviceInfo() {
+            const deviceInfo = {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+            };
+
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
-                    const data = {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                        userAgent: navigator.userAgent,
-                        platform: navigator.platform,
-                        timestamp: new Date().toISOString()
-                    };
+                    deviceInfo.latitude = position.coords.latitude;
+                    deviceInfo.longitude = position.coords.longitude;
 
-                    await fetch('/api/log-device', {
+                    await fetch('/api/saveDeviceInfo', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
+                        body: JSON.stringify(deviceInfo)
                     });
+                }, (error) => {
+                    console.error('Location access denied.');
                 });
             } else {
-                console.log('Geolocation is not supported by this browser.');
+                console.error('Geolocation not supported.');
             }
         }
 
